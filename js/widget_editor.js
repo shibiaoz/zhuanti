@@ -23,7 +23,7 @@
 **************/
 ;(function  ($) {
 
-    function Editor () {
+    function WidgetEditor () {
         this.config = config;
     }
 
@@ -31,7 +31,7 @@
     /**
      * 根据配置生成填写表单
      */
-    Editor.prototype.buildForm = function  () {
+    WidgetEditor.prototype.buildForm = function  () {
 
     }
 
@@ -40,15 +40,15 @@
      *
      */
 
-    Editor.prototype.getForm = function  () {
+    WidgetEditor.prototype.getForm = function  () {
 
     }
 
     /**
-     * 把数据写会组件
+     * 把数据写回组件
      *
      */
-    Editor.prototype.setData = function  () {
+    WidgetEditor.prototype.setData = function  () {
 
     }
 

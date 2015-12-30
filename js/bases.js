@@ -1,25 +1,30 @@
+/**
+ * 下周重写编辑这块逻辑 为一个Editor 模块
+ * 这里作为编辑的调用入口
+ * author: Knight
+ */
 /*=================可编辑样式====================*/
 var Data = {
     type: {
         head: {
             css: ['size', 'background', 'border', 'text'],
-            data:[],
-            tpl:[]
+            data: [],
+            tpl: []
         },
         paragraph: {
             css: ['size', 'background', 'border', 'text'],
-            data:[],
-            tpl:[],
+            data: [],
+            tpl: [],
         },
         list: {
             css: ['size', 'background', 'border', 'text'],
-            data:[],
-            tpl:[]
+            data: [],
+            tpl: []
         },
         image: {
             css: ['size', 'border'],
-            data:[],
-            tpl:[]
+            data: [],
+            tpl: []
         },
         gallery: {
             css: []
@@ -28,12 +33,12 @@ var Data = {
 };
 
 // function(cssArr){
-// 	var i=0,l=cssArr.length,html;
-// 	for(i;i<cssArr.length;i++){
-// 		switch (cssArr[i]){
-// 			case 'align':
-// 		}
-// 	}
+//  var i=0,l=cssArr.length,html;
+//  for(i;i<cssArr.length;i++){
+//      switch (cssArr[i]){
+//          case 'align':
+//      }
+//  }
 // }
 /*=============================================*/
 $(function() {
@@ -43,21 +48,21 @@ $(function() {
     var demo = $('.demo'),
         htmlData;
 
-    function supportstorage() {
-        if (typeof window.localStorage == 'object')
-            return true;
-        else
-            return false;
-    };
-
-    function clearResizeHtml() { //填充之前清除之前resize时动态增加的html 避免重新初始化时冲突
+    /**
+     * 填充之前清除之前resize时动态增加的html
+     * 避免重新初始化时冲突
+     */
+    function clearResizeHtml() {
         $('.ui-resizable').removeClass('ui-resizable');
         $('.ui-resizable-handle').remove();
-    };
+    }
 
+    /**
+     * 恢复数据
+     */
     function restoreData() {
-        if (supportstorage()) {
-            htmlData = JSON.parse(localStorage.getItem("htmlData"));
+        if ($.storage.available()) {
+            htmlData = JSON.parse($.storage.get("htmlData"));
             if (!htmlData) {
                 htmlData = {
                     count: 0,
@@ -73,7 +78,7 @@ $(function() {
             clearResizeHtml();
             $('#css-wrap').text(htmlData.css)
         }
-    };
+    }
 
     function reBuild(e) {
         var html = '<div><ul>' + $('ul', e).html() + '</ul></div>',
@@ -92,6 +97,9 @@ $(function() {
             });
     }
 
+    /**
+     * 轮播图
+     */
     function reSlide(wrap, reb) {
         box = wrap ? wrap : demo;
         $.each($('.slider', box), function(k, v) {
@@ -356,10 +364,11 @@ $(function() {
             idNames.push($(this).parent().next().children().attr('id'));
         })
         .on('click', '.edit', function(e) {
-        	/**
-        	 * 编辑之后修改表单中的内容项目，
-        	 * 然后隐藏相关字段UI
-        	 */
+            /**
+             * 编辑之后修改表单中的内容项目，
+             * 然后隐藏相关字段UI,这种方式不太好，
+             * 表单应该根据组件配置来
+             */
             e.preventDefault();
             var p = $(this).parent().parent(),
                 type = p.data('type'),
@@ -481,6 +490,10 @@ $(function() {
 
     function getCss() {};
 
+
+    /**
+     * 保存
+     */
     function saveLayout() {
         var data = htmlData,
             len = data.step.length,
@@ -492,17 +505,18 @@ $(function() {
             data.step.splice(count + 1, len - count + 1)
         };
         data['css'] = $('#css-wrap').text();
-        if (supportstorage()) {
+        if ($.storage.available()) {
+            // 保存草稿
             localStorage.setItem("htmlData", JSON.stringify(data));
         }
         //console.log(data);
         /*$.ajax({
-        	type: "POST",
-        	url: "/build/saveLayout",
-        	data: { layout: $('.demo').html() },
-        	success: function(data) {
-        		//updateButtonsVisibility();
-        	}
+            type: "POST",
+            url: "/build/saveLayout",
+            data: { layout: $('.demo').html() },
+            success: function(data) {
+                //updateButtonsVisibility();
+            }
         });*/
     }
     $('#edit').on('click', {
