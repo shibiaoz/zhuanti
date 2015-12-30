@@ -7,7 +7,7 @@ zhuanti sys
 1. 创建组件、配置组件需要的数据格式，
 2. 数据格式一定要和组件保持一致
 
-
+```
 demo:
 1. 创建一个paragraph
 tpl:
@@ -38,5 +38,5 @@ image => {
         }
     ]
 }
-
+```
 > [refrence](https://github.com/FishBooy/Spec-pages-sys)
